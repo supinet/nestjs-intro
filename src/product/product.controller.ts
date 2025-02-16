@@ -20,8 +20,8 @@ export class ProductController {
         product.quantity = productData.quantity;
         product.description = productData.description;
         product.category = productData.category;
-        product.features = productData.features;
-        product.images = productData.images;
+        // product.features = productData.features;
+        // product.images = productData.images;
 
         return this.productRepository.create(product);
     }
