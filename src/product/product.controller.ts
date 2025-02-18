@@ -4,11 +4,16 @@ import { CreateProductDto } from './dto/createProductDto';
 import { ProductEntity } from './product.entity';
 import { randomUUID } from 'crypto';
 import { UpdateProductDto } from './dto/updateProductDto';
+import { ProductService } from './product.service';
 
 @Controller('/products')
 export class ProductController {
 
-    constructor(private productRepository: ProductRepository) {}
+    constructor(
+        private productRepository: ProductRepository,
+        private productService: ProductService
+
+    ) {}
 
     @Post()
     async create(@Body() productData: CreateProductDto) {
@@ -23,12 +28,12 @@ export class ProductController {
         // product.features = productData.features;
         // product.images = productData.images;
 
-        return this.productRepository.create(product);
+        return this.productService.create(product);
     }
 
     @Get()
     async findAll() {
-        return this.productRepository.findAll();
+        return this.productService.findAll();
     }
 
     @Put('/:id')
