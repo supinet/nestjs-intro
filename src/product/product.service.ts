@@ -3,6 +3,8 @@ import { ProductEntity } from "./product.entity";
 import { Repository } from "typeorm";
 import { ListProductDto } from "./dto/listProductDto";
 import { UpdateProductDto } from "./dto/updateProductDto";
+import { CreateProductDto } from "./dto/createProductDto";
+import { randomUUID } from "crypto";
 
 export class ProductService {
 
@@ -20,7 +22,17 @@ export class ProductService {
             return recordsFound;
         }
 
-        async create(product: ProductEntity) {
+        async create(productData: CreateProductDto) {
+            const product = new ProductEntity();
+            product.id = randomUUID();
+            product.name = productData.name;
+            product.userId = productData.userId;
+            product.value = productData.value;
+            product.quantity = productData.quantity;
+            product.description = productData.description;
+            product.category = productData.category;
+            product.features = productData.features;
+            product.images = productData.images;
             await this.productRepository.save(product);
         }
 
