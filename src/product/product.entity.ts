@@ -1,4 +1,6 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { ProductFeatureEntity } from "./product-feature.entity";
+import { ProductImageEntity } from "./product-image.entity";
 
 @Entity({ name: 'products' })
 export class ProductEntity {
@@ -24,11 +26,15 @@ export class ProductEntity {
     @Column({ name: 'category', length: 255, nullable: false })
     category: string;
 
-    // @Column({ name: 'name', length: 255, nullable: false })
-    // features: ProductFeature[];
+    @OneToMany(() => ProductFeatureEntity, (productFeatureEntity) => 
+        productFeatureEntity.product,
+        { cascade: true, eager: true })
+    features: ProductFeatureEntity[];
 
-    // @Column({ name: 'name', length: 255, nullable: false })
-    // images: ProductImage[];
+    @OneToMany(() => ProductImageEntity, (productImageEntity) =>
+        productImageEntity.product,
+        { cascade: true, eager: true })
+    images: ProductImageEntity[];
 
     @CreateDateColumn({ name: 'created_at' })
     createdAt: string;

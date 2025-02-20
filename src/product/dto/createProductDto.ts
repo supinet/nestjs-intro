@@ -37,8 +37,12 @@ import { ArrayMinSize,
     Min,
     ValidateNested
 } from "class-validator";
+import { ProductEntity } from "../product.entity";
 
 export class FeaturesProductDto {
+    
+    id: string;
+
     @IsString()
     @IsNotEmpty()
     name: string;
@@ -46,15 +50,22 @@ export class FeaturesProductDto {
     @IsString()
     @IsNotEmpty()
     description: string;
+
+    product: ProductEntity;
 }
 
 export class ImageProductDto {
+    
+    id: string;
+
     @IsUrl()
     url: string;
 
     @IsString()
     @IsNotEmpty()
     description: string;
+
+    product: ProductEntity;
 }
 
 export class CreateProductDto {
