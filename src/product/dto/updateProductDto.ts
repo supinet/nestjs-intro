@@ -57,7 +57,4 @@ export class UpdateProductDto {
     @IsNotEmpty()
     @IsOptional()
     category: string;
-
-    @IsUUID()
-    userId: string;
 }

@@ -108,8 +108,4 @@ export class CreateProductDto {
 
     @IsDateString()
     updatedAt: Date;
-
-    @IsUUID()
-    userId: string;
-
 }

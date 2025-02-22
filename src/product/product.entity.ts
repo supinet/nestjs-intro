@@ -7,9 +7,6 @@ export class ProductEntity {
     
     @PrimaryGeneratedColumn('uuid')
     id: string;
-
-    @Column({ name: 'user_id', length: 100, nullable: false })
-    userId: string;
     
     @Column({ name: 'name', length: 255, nullable: false })
     name: string;

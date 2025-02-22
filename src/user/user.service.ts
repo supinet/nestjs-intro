@@ -4,6 +4,8 @@ import { ListUserDto } from './dto/listUserDto'
 import { UserEntity } from "./user.entity";
 import { Repository } from "typeorm";
 import { UpdateUserDto } from "./dto/updateUserDto";
+import { CreateUserDto } from "./dto/createUserDto";
+import { v4 as uuid } from 'uuid';
 
 
 @Injectable()
@@ -20,8 +22,12 @@ export class UserService {
         return recordsFound;
     }
 
-    async create(user: UserEntity) {
-        await this.userRepository.save(user);
+    async create(user: CreateUserDto) {
+        const userEntity = new UserEntity();
+        userEntity.email = user.email;
+        userEntity.name  = user.name;
+        userEntity.password = user.password;
+        return await this.userRepository.save(userEntity);
     }
 
     async update(id: string, user: UpdateUserDto) {

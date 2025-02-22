@@ -12,21 +12,15 @@ export class UserController {
 
     constructor(
         private userService: UserService,
-        private userRepository: UserRepository
     ) {}
 
     @Post()
     async create(@Body() user: CreateUserDto) {
-        const userEntity = new UserEntity();
-        userEntity.email = user.email;
-        userEntity.name  = user.name;
-        userEntity.password = user.password;
-        userEntity.id = uuid();
 
-        this.userService.create(userEntity);
+        const userCreated = await this.userService.create(user);
 
         return {
-            user: new ListUserDto(userEntity.id, userEntity.name),
+            user: new ListUserDto(userCreated.id, userCreated.name),
             message: 'record inserted'
         };
     }

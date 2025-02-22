@@ -100,7 +100,7 @@ Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
 
 
 ## github
-- https://github.com/alura-cursos/nestjs-typeorm-alura/tree/lesson/4
+- https://github.com/alura-cursos/nestjs-curso-3
 
 ## database
 
@@ -124,4 +124,18 @@ port 5432
 Maintenance database: `postgres`
 username: `root`
 password: `root`
+```
+
+- migrations
+```
+- show existing migrations
+- tested nodejs 18.18
+npm run typeorm migration:show -d src/db/data-source-cli.ts
+npm run typeorm migration:generate src/db/migrations/create-tables
+
+```
+
+- NestJS
+```
+nest g resource order --no-spec
 ```

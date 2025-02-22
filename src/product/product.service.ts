@@ -17,7 +17,7 @@ export class ProductService {
         async findAll() {
             const records = await this.productRepository.find();
             const recordsFound = records.map(item => new ListProductDto(
-                item.id, item.userId, item.name, item.value, item.quantity, item.description, item.category
+                item.id, item.name, item.value, item.quantity, item.description, item.category
             ));
             return recordsFound;
         }
@@ -26,7 +26,6 @@ export class ProductService {
             const product = new ProductEntity();
             product.id = randomUUID();
             product.name = productData.name;
-            product.userId = productData.userId;
             product.value = productData.value;
             product.quantity = productData.quantity;
             product.description = productData.description;
