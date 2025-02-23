@@ -1,8 +1,8 @@
 /**
  * {
     "name": "Figura de ação Marvel Homem Aranha Olympus Homem Aranha E6358 de Hasbro Classic",
-    "value": 70.0,
-    "quantity": 10,
+    "value": 29,
+    "availableQuantity": 10,
     "description": "Produto novo, bem acabado, alegria para colecionadores",
     "features": [{
         "name": "Fabricante",
@@ -14,11 +14,11 @@
         "name": "Child",
         "description": "More than 5 years"
     }],
-    "imagens": [{
+    "images": [{
         "url": "https://i.imgur.com/dwDZICq.jpg",
         "description": "Imagem do Homem Aranha"
     }],
-    "category": "Colecionáveis",
+    "category": "Conservation",
     "createdAt": "2022-10-12T14:22:53.496Z",
     "updatedAt": "2022-10-12T14:22:53.496Z"
    }
@@ -80,7 +80,7 @@ export class CreateProductDto {
 
     @IsNumber()
     @Min(0)
-    quantity: number;
+    availableQuantity: number;
 
     @IsString()
     @IsNotEmpty()

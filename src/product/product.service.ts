@@ -1,9 +1,9 @@
 import { InjectRepository } from "@nestjs/typeorm";
 import { ProductEntity } from "./product.entity";
 import { Repository } from "typeorm";
-import { ListProductDto } from "./dto/listProductDto";
-import { UpdateProductDto } from "./dto/updateProductDto";
-import { CreateProductDto } from "./dto/createProductDto";
+import { ListProductDto } from "./dto/list-product-dto";
+import { UpdateProductDto } from "./dto/update-product-dto";
+import { CreateProductDto } from "./dto/create-product-dto";
 import { randomUUID } from "crypto";
 
 export class ProductService {
@@ -17,7 +17,7 @@ export class ProductService {
         async findAll() {
             const records = await this.productRepository.find();
             const recordsFound = records.map(item => new ListProductDto(
-                item.id, item.name, item.value, item.quantity, item.description, item.category
+                item.id, item.name, item.value, item.availableQuantity, item.description, item.category
             ));
             return recordsFound;
         }
@@ -27,7 +27,7 @@ export class ProductService {
             product.id = randomUUID();
             product.name = productData.name;
             product.value = productData.value;
-            product.quantity = productData.quantity;
+            product.availableQuantity = productData.availableQuantity;
             product.description = productData.description;
             product.category = productData.category;
             product.features = productData.features;

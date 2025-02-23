@@ -132,6 +132,7 @@ password: `root`
 - tested nodejs 18.18
 npm run typeorm migration:show -d src/db/data-source-cli.ts
 npm run typeorm migration:generate src/db/migrations/create-tables
+npm run typeorm migration:run
 
 ```
 

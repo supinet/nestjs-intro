@@ -1,6 +1,7 @@
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { ProductFeatureEntity } from "./product-feature.entity";
 import { ProductImageEntity } from "./product-image.entity";
+import { OrderItemEntity } from "../order/order-item.entity";
 
 @Entity({ name: 'products' })
 export class ProductEntity {
@@ -14,8 +15,8 @@ export class ProductEntity {
     @Column({ name: 'value', nullable: false })
     value: number;
 
-    @Column({ name: 'quantity', nullable: false })
-    quantity: number;
+    @Column({ name: 'available_quantity', nullable: false })
+    availableQuantity: number;
 
     @Column({ name: 'description', length: 255, nullable: false })
     description: string;
@@ -41,4 +42,7 @@ export class ProductEntity {
     
     @DeleteDateColumn( {name: 'deleted_at' })
     deletedAt: string;
+
+    @OneToMany(() => OrderItemEntity, (orderItem) => orderItem.product)
+    orderItems: OrderItemEntity[];
 }

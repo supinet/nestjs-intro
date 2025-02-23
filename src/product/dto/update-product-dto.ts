@@ -11,7 +11,7 @@ import { ArrayMinSize,
     Min,
     ValidateNested
 } from "class-validator";
-import { FeaturesProductDto, ImageProductDto } from "./createProductDto";
+import { FeaturesProductDto, ImageProductDto } from "./create-product-dto";
 
 export class UpdateProductDto {
 

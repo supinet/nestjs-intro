@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { ProductEntity } from "./product.entity";
 
 @Entity({ name: 'product_features' })
@@ -20,5 +20,6 @@ export class ProductFeatureEntity {
             onUpdate: 'CASCADE'
         }
     )
+    @JoinColumn( { name: "product_id" })
     product: ProductEntity;
 }
