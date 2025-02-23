@@ -5,6 +5,7 @@ import { ListProductDto } from "./dto/list-product-dto";
 import { UpdateProductDto } from "./dto/update-product-dto";
 import { CreateProductDto } from "./dto/create-product-dto";
 import { randomUUID } from "crypto";
+import { NotFoundException } from "@nestjs/common";
 
 export class ProductService {
 
@@ -36,9 +37,10 @@ export class ProductService {
         }
 
         async update(id: string, productData: UpdateProductDto) {
-            const entityName = await this.productRepository.findOneBy({ id });
+            const entityName = await this.productRepository.findOneBy({ id })
+                                ?? (() => { throw new NotFoundException('Product not found'); }) ();
             Object.assign(entityName ?? {}, productData);
-            await this.productRepository.save(productData);
+            await this.productRepository.save(entityName);
         }
 
         async delete(id: string) {

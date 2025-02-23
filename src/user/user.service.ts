@@ -5,7 +5,6 @@ import { UserEntity } from "./user.entity";
 import { Repository } from "typeorm";
 import { UpdateUserDto } from "./dto/update-user-dto";
 import { CreateUserDto } from "./dto/create-user-dto";
-import { v4 as uuid } from 'uuid';
 
 
 @Injectable()

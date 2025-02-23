@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order-dto';
 import { UpdateOrderDto } from './dto/update-order-dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -8,6 +8,7 @@ import { UserEntity } from 'src/user/user.entity';
 import { ProductEntity } from 'src/product/product.entity';
 import { OrderStatus } from './enum/orderstatus.enum';
 import { OrderItemEntity } from './order-item.entity';
+import { ListOrderDto } from './dto/list-order-dto';
 
 @Injectable()
 export class OrderService {
@@ -28,7 +29,7 @@ export class OrderService {
   async create(userId: string, orderData: CreateOrderDto) {
 
     const user = await this.userRepository.findOneBy({ id: userId })
-                  ?? (() => { throw new Error('User not found'); }) ();
+                  ?? (() => { throw new NotFoundException('User not found'); }) ();
 
     const productsId = orderData.orderItems.map((orderItem) => orderItem.productId);
 
@@ -64,16 +65,21 @@ export class OrderService {
     return await this.orderRepository.save(orderEntity);
   }
 
-  findAll() {
-    return `This action returns all order`;
+  async findAll() {
+    const orders = await this.orderRepository.find();
+    const ordersFounded = orders.map(order => new ListOrderDto(order.id, order.total));
+    return ordersFounded;
   }
 
   findOne(id: number) {
     return `This action returns a #${id} order`;
   }
 
-  update(id: number, updateOrderDto: UpdateOrderDto) {
-    return `This action updates a #${id} order`;
+  async update(id: string, updateOrderDto: UpdateOrderDto) {
+    const order = await this.orderRepository.findOneBy({ id })
+                  ?? (() => { throw new NotFoundException('Order not found'); }) ();
+    Object.assign(order ?? {}, UpdateOrderDto);
+    return this.orderRepository.save(order);
   }
 
   remove(id: number) {
