@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order-dto';
 import { UpdateOrderDto } from './dto/update-order-dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -26,6 +26,28 @@ export class OrderService {
 
   ) { }
 
+  checkOrderData(
+    orderData: CreateOrderDto,
+    productsOrderItems: ProductEntity[],
+  ) {
+    orderData.orderItems.forEach((item) => {
+      const relatedProduct = productsOrderItems.find(
+        (product) => product.id === item.productId,
+      );
+
+      if (!relatedProduct) {
+        throw new NotFoundException(
+          `Product id ${item.productId} not found`,
+        );
+      }
+
+      if (item.quantity > relatedProduct.availableQuantity) {
+        throw new BadRequestException(
+          `Product id ${relatedProduct.name} is unavailable`,
+        )
+      }
+    })
+  }
   async create(userId: string, orderData: CreateOrderDto) {
 
     const user = await this.userRepository.findOneBy({ id: userId })
@@ -34,7 +56,9 @@ export class OrderService {
     const productsId = orderData.orderItems.map((orderItem) => orderItem.productId);
 
     const productsOrder = await this.productRepository.findBy({ id: In(productsId) });
-    
+
+    this.checkOrderData(orderData, productsOrder)
+
     const orderEntity = new OrderEntity();
 
     orderEntity.status = OrderStatus.IN_PROCESSING
@@ -42,7 +66,7 @@ export class OrderService {
 
     const productsOrderItems = orderData.orderItems.map((orderItem) => {
       const productOrder = productsOrder.find((product) => product.id === orderItem.productId);
-      
+
       const productOrderItem = new OrderItemEntity();
       
       if (productOrder) {
@@ -78,7 +102,7 @@ export class OrderService {
   async update(id: string, updateOrderDto: UpdateOrderDto) {
     const order = await this.orderRepository.findOneBy({ id })
                   ?? (() => { throw new NotFoundException('Order not found'); }) ();
-    Object.assign(order ?? {}, UpdateOrderDto);
+    Object.assign(order ?? {}, updateOrderDto);
     return this.orderRepository.save(order);
   }
 
