@@ -1,18 +1,7 @@
 import { IsEmail, IsNotEmpty, IsOptional, MinLength } from "class-validator";
 import { UniqueEmail } from "../validation/unique-email.validator";
+import { CreateUserDto } from "./create-user-dto";
+import { PartialType } from "@nestjs/mapped-types";
 
-export class UpdateUserDto {
-    
-    @IsNotEmpty()
-    @IsOptional()
-    name: string;
-
-    @IsEmail()
-    @UniqueEmail({ message: 'email already registered' })
-    @IsOptional()
-    email: string;
-
-    @MinLength(6)
-    @IsOptional()
-    password: string;
+export class UpdateUserDto extends PartialType(CreateUserDto) {
 }
