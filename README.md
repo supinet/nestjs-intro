@@ -140,3 +140,25 @@ npm run typeorm migration:run
 ```
 nest g resource order --no-spec
 ```
+
+
+## requests
+- POST http://localhost:3000/orders/
+```
+{
+	"orderItems": [
+		{
+			"productId": "c7d8669b-370f-4108-9134-6d988b92a7df",
+			"quantity": 1
+		}
+	]
+}
+```
+
+- order update
+- PATCH: http://localhost:3000/orders/c75aece7-6e9f-4378-a4fc-54ac2348ff1c
+```
+{
+	"status": "processed"
+}
+```
