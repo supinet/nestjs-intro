@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { UserModule } from './user/user.module';
-import { ProductModule } from './product/product.module';
+import { UserModule } from './modules/user/user.module';
+import { ProductModule } from './modules/product/product.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostgresConfigService } from './config/postgres.config.service';
 import { ConfigModule } from '@nestjs/config';
-import { OrderModule } from './order/order.module';
+import { OrderModule } from './modules/order/order.module';
 import { APP_FILTER } from '@nestjs/core';
-import { FilterExceptionGlobal } from './filters/filter-exception-global';
+import { FilterExceptionGlobal } from './resources/filters/filter-exception-global';
 
 @Module({
   imports: [

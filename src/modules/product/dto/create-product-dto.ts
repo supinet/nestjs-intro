@@ -38,7 +38,7 @@ import { ArrayMinSize,
     ValidateNested
 } from "class-validator";
 import { ProductEntity } from "../product.entity";
-import { OrderItemEntity } from "src/order/order-item.entity";
+import { OrderItemEntity } from "src/modules/order/order-item.entity";
 
 export class FeaturesProductDto {
     
