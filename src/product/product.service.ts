@@ -25,21 +25,16 @@ export class ProductService {
 
         async create(productData: CreateProductDto) {
             const product = new ProductEntity();
-            product.id = randomUUID();
-            product.name = productData.name;
-            product.value = productData.value;
-            product.availableQuantity = productData.availableQuantity;
-            product.description = productData.description;
-            product.category = productData.category;
-            product.features = productData.features;
-            product.images = productData.images;
+            
+            Object.assign(product, productData as ProductEntity);
+            
             await this.productRepository.save(product);
         }
 
         async update(id: string, productData: UpdateProductDto) {
             const entityName = await this.productRepository.findOneBy({ id })
                                 ?? (() => { throw new NotFoundException('Product not found'); }) ();
-            Object.assign(entityName ?? {}, productData);
+            Object.assign(entityName ?? {}, <ProductEntity> productData);
             await this.productRepository.save(entityName);
         }
 

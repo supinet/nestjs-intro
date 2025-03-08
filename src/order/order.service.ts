@@ -102,7 +102,7 @@ export class OrderService {
   async update(id: string, updateOrderDto: UpdateOrderDto) {
     const order = await this.orderRepository.findOneBy({ id })
                   ?? (() => { throw new NotFoundException('Order not found'); }) ();
-    Object.assign(order ?? {}, updateOrderDto);
+    Object.assign(order ?? {}, <OrderEntity> updateOrderDto);
     return this.orderRepository.save(order);
   }
 

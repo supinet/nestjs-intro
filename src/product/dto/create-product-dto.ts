@@ -38,6 +38,7 @@ import { ArrayMinSize,
     ValidateNested
 } from "class-validator";
 import { ProductEntity } from "../product.entity";
+import { OrderItemEntity } from "src/order/order-item.entity";
 
 export class FeaturesProductDto {
     
@@ -69,6 +70,8 @@ export class ImageProductDto {
 }
 
 export class CreateProductDto {
+
+    id: string;
 
     @IsString()
     @IsNotEmpty()
@@ -104,8 +107,12 @@ export class CreateProductDto {
     category: string;
 
     @IsDateString()
-    createdAt: Date;
+    createdAt: string;
 
     @IsDateString()
-    updatedAt: Date;
+    updatedAt: string;
+
+    deletedAt: string;
+
+    orderItems: OrderItemEntity[]
 }

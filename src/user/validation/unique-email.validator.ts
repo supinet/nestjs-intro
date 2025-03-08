@@ -6,7 +6,7 @@ import {
     ValidatorConstraintInterface
 } from "class-validator";
 import { UserRepository } from "../user.repository";
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 
 @Injectable()
 @ValidatorConstraint({ async: true })
@@ -15,8 +15,17 @@ export class UniqueEmailValidator implements ValidatorConstraintInterface {
     constructor(private userRepository: UserRepository) {}
 
     async validate(value: any, validationArguments?: ValidationArguments): Promise<boolean> {
-        const userWithEmailExists = await this.userRepository.existWithEmail(value);
-        return !userWithEmailExists;
+        try {
+            const userWithEmailExists = await this.userRepository.existWithEmail(
+                value
+            );
+            return !userWithEmailExists;
+        } catch (error) {
+            if (error instanceof NotFoundException) {
+                return true;
+            }
+            throw error;
+        }
     }
 }
 
@@ -28,6 +37,6 @@ export const UniqueEmail = (validationOptions: ValidationOptions) => {
             options: validationOptions,
             constraints: [],
             validator: UniqueEmailValidator
-        })
-    }
-}
+        });
+    };
+};
