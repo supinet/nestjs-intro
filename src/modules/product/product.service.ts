@@ -4,16 +4,14 @@ import { Repository } from "typeorm";
 import { ListProductDto } from "./dto/list-product-dto";
 import { UpdateProductDto } from "./dto/update-product-dto";
 import { CreateProductDto } from "./dto/create-product-dto";
-import { randomUUID } from "crypto";
-import { NotFoundException } from "@nestjs/common";
+import { Inject, NotFoundException } from "@nestjs/common";
 
 export class ProductService {
 
     constructor(
         @InjectRepository(ProductEntity)
-        private readonly productRepository: Repository<ProductEntity>) {
-
-        }
+        private readonly productRepository: Repository<ProductEntity>
+    ) { }
 
         async findAll() {
             const records = await this.productRepository.find();
@@ -21,6 +19,11 @@ export class ProductService {
                 item.id, item.name, item.value, item.availableQuantity, item.description, item.category
             ));
             return recordsFound;
+        }
+
+        async findById(id: string) {
+            return await this.productRepository.findOneBy({ id })
+                .then((data) => { return data as ProductEntity } )
         }
 
         async create(productData: CreateProductDto) {

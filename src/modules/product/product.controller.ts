@@ -1,16 +1,19 @@
-import { Post, Get, Controller, Body, Put, Param, Delete } from '@nestjs/common';
+import { Post, Get, Controller, Body, Put, Param, Delete, UseInterceptors, Inject } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product-dto';
-import { ProductEntity } from './product.entity';
-import { randomUUID } from 'crypto';
 import { UpdateProductDto } from './dto/update-product-dto';
 import { ProductService } from './product.service';
+import { CacheInterceptor } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { ProductEntity } from './product.entity';
 
 @Controller('/products')
 export class ProductController {
 
     constructor(
-        private productService: ProductService
-
+        private productService: ProductService,
+        @Inject(CACHE_MANAGER)
+        private cacheManager: Cache,
     ) {}
 
     @Post()
@@ -21,6 +24,22 @@ export class ProductController {
     @Get()
     async findAll() {
         return this.productService.findAll();
+    }
+
+    @Get('/:id')
+    async findById(@Param('id') id: string) {
+        let product = await this.cacheManager.get<ProductEntity>(
+            `product-${id}`
+        )
+        if (!product) {
+            console.log(`getting from cache!`);
+            product = await this.productService.findById(id);
+            await this.cacheManager.set(`product-${id}`, product)
+        }
+        return {
+            message: `Record goten with success`,
+            product,
+        }
     }
 
     @Put('/:id')
