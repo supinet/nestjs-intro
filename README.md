@@ -100,7 +100,7 @@ Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
 
 
 ## github
-- https://github.com/alura-cursos/nestjs-curso-3
+- https://github.com/alura-cursos/nestjs-curso-4/blob/aula-1/src/app.module.ts
 
 ## database
 

@@ -12,8 +12,7 @@ export class ProductController {
 
     constructor(
         private productService: ProductService,
-        @Inject(CACHE_MANAGER)
-        private cacheManager: Cache,
+        @Inject(CACHE_MANAGER) private cacheManager: Cache,
     ) {}
 
     @Post()
@@ -29,12 +28,14 @@ export class ProductController {
     @Get('/:id')
     async findById(@Param('id') id: string) {
         let product = await this.cacheManager.get<ProductEntity>(
-            `product-${id}`
+            `product-${id}`,
         )
+        console.log(`product from cache ${JSON.stringify(product)}`);
         if (!product) {
-            console.log(`getting from cache!`);
+            console.log(`getting from cache! ${product}`);
             product = await this.productService.findById(id);
-            await this.cacheManager.set(`product-${id}`, product)
+            const cacheData = await this.cacheManager.set(`product-${id}`, product);
+            console.log(`cache saved ${JSON.stringify(cacheData)}`);
         }
         return {
             message: `Record goten with success`,
