@@ -9,6 +9,7 @@ import { ProductEntity } from 'src/modules/product/product.entity';
 import { OrderStatus } from './enum/orderstatus.enum';
 import { OrderItemEntity } from './order-item.entity';
 import { ListOrderDto } from './dto/list-order-dto';
+import { OrderProductUnavailable } from './validation/order-product-unavailable';
 
 @Injectable()
 export class OrderService {
@@ -24,30 +25,11 @@ export class OrderService {
     @InjectRepository(ProductEntity)
     private readonly productRepository: Repository<ProductEntity>,
 
+    private readonly orderProductUnavailable: OrderProductUnavailable,
+
   ) { }
 
-  checkOrderData(
-    orderData: CreateOrderDto,
-    productsOrderItems: ProductEntity[],
-  ) {
-    orderData.orderItems.forEach((item) => {
-      const relatedProduct = productsOrderItems.find(
-        (product) => product.id === item.productId,
-      );
 
-      if (!relatedProduct) {
-        throw new NotFoundException(
-          `Product id ${item.productId} not found`,
-        );
-      }
-
-      if (item.quantity > relatedProduct.availableQuantity) {
-        throw new BadRequestException(
-          `Product id ${relatedProduct.name} is unavailable`,
-        )
-      }
-    })
-  }
   async create(userId: string, orderData: CreateOrderDto) {
 
     const user = await this.userRepository.findOneBy({ id: userId })
@@ -57,7 +39,7 @@ export class OrderService {
 
     const productsOrder = await this.productRepository.findBy({ id: In(productsId) });
 
-    this.checkOrderData(orderData, productsOrder)
+    this.orderProductUnavailable.validate(orderData, productsOrder)
 
     const orderEntity = new OrderEntity();
 

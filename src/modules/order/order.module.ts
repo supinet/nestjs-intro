@@ -6,6 +6,7 @@ import { OrderEntity } from './order.entity';
 import { OrderItemEntity } from './order-item.entity';
 import { UserEntity } from 'src/modules/user/user.entity';
 import { ProductEntity } from 'src/modules/product/product.entity';
+import { OrderProductUnavailable } from './validation/order-product-unavailable';
 
 @Module({
   imports: [TypeOrmModule.forFeature([
@@ -15,6 +16,6 @@ import { ProductEntity } from 'src/modules/product/product.entity';
     ProductEntity,
   ])],
   controllers: [OrderController],
-  providers: [OrderService],
+  providers: [OrderService, OrderProductUnavailable],
 })
 export class OrderModule {}
