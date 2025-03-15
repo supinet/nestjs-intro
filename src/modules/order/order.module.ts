@@ -15,7 +15,12 @@ import { OrderProductUnavailable } from './validation/order-product-unavailable'
     UserEntity,
     ProductEntity,
   ])],
-  controllers: [OrderController],
-  providers: [OrderService, OrderProductUnavailable],
+  controllers: [
+    OrderController
+  ],
+  providers: [
+    OrderService,
+    OrderProductUnavailable
+  ],
 })
 export class OrderModule {}

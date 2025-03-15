@@ -17,6 +17,9 @@ import { UserService } from './user.service';
         UserService,
         UserRepository,
         UniqueEmailValidator,
+    ],
+    exports: [
+        UserService
     ]
 })
 export class UserModule {

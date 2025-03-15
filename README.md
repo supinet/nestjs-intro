@@ -162,3 +162,12 @@ nest g resource order --no-spec
 	"status": "processed"
 }
 ```
+
+
+node
+Welcome to Node.js v20.17.0.
+Type ".help" for more information.
+> const bcrypt = require('bcrypt');
+undefined
+> bcrypt.genSaltSync(10);
+'$2b$10$n1h91tLIgr66uUffiY5ei.'

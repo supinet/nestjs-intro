@@ -36,10 +36,13 @@ export class UserService {
     }
 
     async getByEmail(email: string) {
-        await this.userRepository.findOne({
+        const checkEmail = await this.userRepository.findOne({
             where: { email },
-        })
-        .then(() => { return true; })
-        .catch(() => { throw new NotFoundException(`${email} not found`) });
+        });
+
+        if (checkEmail === null)
+            throw new NotFoundException('E-mail not found.');
+
+        return checkEmail;
     }
 }

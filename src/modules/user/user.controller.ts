@@ -1,11 +1,10 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
 import { UserRepository } from "./user.repository";
 import { CreateUserDto } from "./dto/create-user-dto";
-import { UserEntity } from "./user.entity";
-import { v4 as uuid } from 'uuid';
 import { ListUserDto } from "./dto/list-user-dto";
 import { UpdateUserDto } from "./dto/update-user-dto";
 import { UserService } from "./user.service";
+import { HashPasswordPipe } from "../../resources/pipes/hash-password-pipe";
 
 @Controller('/users')
 export class UserController {
@@ -15,9 +14,14 @@ export class UserController {
     ) {}
 
     @Post()
-    async create(@Body() user: CreateUserDto) {
-
-        const userCreated = await this.userService.create(user);
+    async create(
+        @Body() { password, ...user}: CreateUserDto,
+        @Body('password', HashPasswordPipe) hashedPassword: string,
+    ) {
+        const userCreated = await this.userService.create({
+            ...user,
+            password: hashedPassword,
+         });
 
         return {
             user: new ListUserDto(userCreated.id, userCreated.name),
