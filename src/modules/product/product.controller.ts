@@ -1,4 +1,4 @@
-import { Post, Get, Controller, Body, Put, Param, Delete, UseInterceptors, Inject } from '@nestjs/common';
+import { Post, Get, Controller, Body, Put, Param, Delete, UseInterceptors, Inject, UseGuards } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product-dto';
 import { UpdateProductDto } from './dto/update-product-dto';
 import { ProductService } from './product.service';
@@ -6,7 +6,9 @@ import { CacheInterceptor } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { ProductEntity } from './product.entity';
+import { AuthenticationGuard } from '../authentication/authentication.guard';
 
+@UseGuards(AuthenticationGuard)
 @Controller('/products')
 export class ProductController {
 

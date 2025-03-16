@@ -4,12 +4,12 @@ import { CreateOrderDto } from './dto/create-order-dto';
 import { UpdateOrderDto } from './dto/update-order-dto';
 import { AuthenticationGuard } from '../authentication/authentication.guard';
 
+@UseGuards(AuthenticationGuard)
 @Controller('orders')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   @Post()
-  @UseGuards(AuthenticationGuard)
   create(
     @Query('userId') userId: string,
     @Body() orderData: CreateOrderDto
