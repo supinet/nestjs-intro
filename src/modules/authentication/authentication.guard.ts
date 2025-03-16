@@ -21,9 +21,10 @@ export class AuthenticationGuard implements CanActivate {
     const token = this.extractHeaderToken(request);
     if (!token) throw new UnauthorizedException('Authentication error');
     try {
-      //veriry the authenticity of jwt and it's at the right user
+      // veriry the authenticity of jwt and it's at the right user
       const payload: UserPayload = await this.jwtService.verifyAsync(token);
-      //add the payload on user to get it after
+      // add the payload on user to get it after,
+      // then he goes to access some protected endpoint it will be allowed
       request.user =  payload;
     } catch(error) {
       console.error(error);

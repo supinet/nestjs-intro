@@ -91,4 +91,20 @@ export class OrderService {
   remove(id: number) {
     return `This action removes a #${id} order`;
   }
+
+  async findByUser(userId: string) {
+    await this.findUser(userId);
+    return this.orderRepository.find({
+      where: {
+        user: { id: userId },
+      },
+      relations: {
+        user: true
+      },
+    });
+  }
+
+  private async findUser(id: string) {
+    return this.userRepository.findOneBy({ id }) ?? new NotFoundException('User not found');
+  }
 }

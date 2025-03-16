@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards, Req } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order-dto';
 import { UpdateOrderDto } from './dto/update-order-dto';
-import { AuthenticationGuard } from '../authentication/authentication.guard';
+import { AuthenticationGuard, RequestWithUser } from '../authentication/authentication.guard';
 
 @UseGuards(AuthenticationGuard)
 @Controller('orders')
@@ -10,24 +10,30 @@ export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   @Post()
-  create(
-    @Query('userId') userId: string,
+  async create(
+    @Req() req: RequestWithUser,
     @Body() orderData: CreateOrderDto
   ) {
+    const userId = req.user.sub;
     return this.orderService.create(
       userId,
       orderData,
     );
   }
 
-  @Get()
-  async findAll() {
-    return await this.orderService.findAll();
-  }
-
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.orderService.findOne(+id);
+  }
+  
+  @Get()
+  async findByUser(@Req() req: RequestWithUser) {
+    const userId = req.user.sub;
+    const orders = await this.orderService.findByUser(userId);
+    return {
+      message: 'Orders found',
+      orders
+    }
   }
 
   @Patch(':id')
