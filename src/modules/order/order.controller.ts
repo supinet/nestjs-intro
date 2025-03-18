@@ -37,8 +37,12 @@ export class OrderController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
-    return this.orderService.update(id, updateOrderDto);
+  update(
+    @Req() req: RequestWithUser,
+    @Param('id') id: string,
+    @Body() updateOrderDto: UpdateOrderDto) {
+    const userId = req.user.sub;
+    return this.orderService.update(id, updateOrderDto, userId);
   }
 
   @Delete(':id')
